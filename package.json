@@ -1,0 +1,24 @@
+{
+    "name": "react-node-bird",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "next"
+    },
+    "author": "woo",
+    "license": "ISC",
+    "dependencies": {
+        "@ant-design/icons": "^4.8.0",
+        "antd": "^4.24.5",
+        "next": "^9.5.5",
+        "prop-types": "^15.8.1",
+        "styled-components": "^5.3.6"
+    },
+    "devDependencies": {
+        "eslint": "^8.30.0",
+        "eslint-plugin-import": "^2.26.0",
+        "eslint-plugin-react": "^7.31.11",
+        "eslint-plugin-react-hooks": "^4.6.0"
+    }
+}
