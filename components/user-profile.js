@@ -1,15 +1,19 @@
-import { Avatar, Card, Button } from "antd";
-import styled from "styled-components";
-import { useCallback } from "react";
+import { Avatar, Card, Button } from "antd"
+import styled from "styled-components"
+import { useCallback } from "react"
+import { useDispatch } from "react-redux"
+
+import { logoutAction } from "../reducers/user"
 
 const ButtonWrapper = styled(Button)`
     margin-left: 30px;
     margin-top: 10px;
-`;
-const UserProfile = ({ setIsLoggedIn }) => {
+`
+const UserProfile = () => {
+    const dispatch = useDispatch()
     const onLogout = useCallback(() => {
-        setIsLoggedIn(false);
-    });
+        dispatch(logoutAction())
+    })
     return (
         <Card
             actions={[
@@ -30,7 +34,7 @@ const UserProfile = ({ setIsLoggedIn }) => {
             <Card.Meta avatar={<Avatar>Woo</Avatar>} title="woo" />
             <ButtonWrapper onClick={onLogout}>로그아웃</ButtonWrapper>
         </Card>
-    );
-};
+    )
+}
 
-export default UserProfile;
+export default UserProfile

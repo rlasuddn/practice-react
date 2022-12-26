@@ -13,19 +13,28 @@ const Signup = () => {
     const [id, onChangeId] = useInput("");
     const [nickname, onChangeNickname] = useInput("");
     const [password, onChangePassword] = useInput("");
+
     const [passwordCheck, setPasswordCheck] = useState("");
     const [passwordError, setPasswordError] = useState(false);
+    //패스워드 체크
     const onChangePasswordCheck = useCallback(
         (e) => {
+            //input password를 password state에 저장
             setPasswordCheck(e.target.value);
+            //password check Error 상태값 저장
             setPasswordError(e.target.value !== password);
         },
+        //password 상태값의 변화를 저장
         [password]
     );
+
     const [term, setTerm] = useState("");
     const [termError, setTermError] = useState(false);
+    //약관 동의
     const onChangeTerm = useCallback((e) => {
+        //term 상태값 저장
         setTerm(e.target.checked);
+        //onSubmit으로 setTermError(true)로 변경돼서 다시 onChangeTerm으로 약관동의를 하면  setTermError(false)으로 에러메세지를 지워준다
         setTermError(false);
     }, []);
 

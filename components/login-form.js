@@ -1,25 +1,29 @@
-import { Form, Input, Button } from "antd";
-import { useState, useCallback } from "react";
-import Link from "next/Link";
-import styled from "styled-components";
-import PropTypes from "prop-types";
-import useInput from "../hooks/use-input";
+import { Form, Input, Button } from "antd"
+import { useState, useCallback } from "react"
+import Link from "next/Link"
+import styled from "styled-components"
+import PropTypes from "prop-types"
+import useInput from "../hooks/use-input"
+import { useDispatch } from "react-redux"
+
+import { loginAction } from "../reducers/user"
 
 const ButtonWrapper = styled.div`
     margin-top: 10px;
-`;
+`
 const FormWrapper = styled(Form)`
     padding: 10px;
-`;
+`
 
-const LoginForm = ({ setIsLoggedIn }) => {
-    const [id, onChangeId] = useInput("");
-    const [password, onChangePassword] = useInput("");
+const LoginForm = () => {
+    const dipatch = useDispatch()
+    const [id, onChangeId] = useInput("")
+    const [password, onChangePassword] = useInput("")
 
     const onSubmitForm = useCallback(() => {
-        console.log(id, password);
-        setIsLoggedIn(true);
-    }, [id, password]);
+        console.log(id, password)
+        dipatch(loginAction({ id, password }))
+    }, [id, password])
 
     return (
         <FormWrapper onFinish={onSubmitForm}>
@@ -31,7 +35,13 @@ const LoginForm = ({ setIsLoggedIn }) => {
             <div>
                 <label htmlFor="user-password">비밀번호</label>
                 <br />
-                <Input name="user-password" type="password" required value={password} onChange={onChangePassword}></Input>
+                <Input
+                    name="user-password"
+                    type="password"
+                    required
+                    value={password}
+                    onChange={onChangePassword}
+                ></Input>
             </div>
             <div style={{ marginTop: 10 }}>
                 <ButtonWrapper>
@@ -44,11 +54,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
                 </Link>
             </div>
         </FormWrapper>
-    );
-};
+    )
+}
 
-LoginForm.propTypes = {
-    setIsLoggedIn: PropTypes.func.isRequired,
-};
-
-export default LoginForm;
+export default LoginForm
