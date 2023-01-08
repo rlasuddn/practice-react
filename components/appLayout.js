@@ -1,18 +1,18 @@
-import PropTypes from "prop-types";
-import Link from "next/Link";
-import { Menu, Input, Row, Col } from "antd";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import PropTypes from "prop-types"
+import Link from "next/Link"
+import { Menu, Input, Row, Col } from "antd"
+import { useState } from "react"
+import { useSelector } from "react-redux"
 
-import UserProfile from "./user-profile";
-import LoginForm from "./login-form";
+import UserProfile from "./user-profile"
+import LoginForm from "./login-form"
 
-import styled from "styled-components";
+import styled from "styled-components"
 
 //styeled 컴포넌트 생성으로 리렌더링 최적화
 const SerchInput = styled(Input.Search)`
     vertical-align: middle;
-`;
+`
 const items = [
     {
         label: (
@@ -39,10 +39,10 @@ const items = [
         key: "signup",
     },
     { label: <SerchInput enterButton style={{ verticalAlign: "middle" }} />, key: "search" },
-];
+]
 //특정 컴포넌트끼리 공통적인 부분 처리 파일
 const AppLayout = ({ children }) => {
-    const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+    const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
     //Row: 가로 Col 세로
     //xs는 모바일 24칸 = 100% 어느정도 화면비율이 가면 6칸 = 25% 만 사용하도록 설정
     //xs md 합쳐서 24이하면 가로로 정렬되고 24이상이면 그 다음 줄로 넘어간다.
@@ -65,11 +65,11 @@ const AppLayout = ({ children }) => {
                 </Col>
             </Row>
         </div>
-    );
-};
+    )
+}
 
 //ProTypes.node는 컴포넌트에서 return 하는 모든 것을 말한다.
 AppLayout.propTypes = {
     children: PropTypes.node.isRequired,
-};
-export default AppLayout;
+}
+export default AppLayout
