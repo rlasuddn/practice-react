@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import Link from "next/Link"
+import Link from "next/link"
 import { Menu, Input, Row, Col } from "antd"
 import { useState } from "react"
 import { useSelector } from "react-redux"
@@ -42,7 +42,7 @@ const items = [
 ]
 //특정 컴포넌트끼리 공통적인 부분 처리 파일
 const AppLayout = ({ children }) => {
-    const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
+    const user = useSelector((state) => state.user.user)
     //Row: 가로 Col 세로
     //xs는 모바일 24칸 = 100% 어느정도 화면비율이 가면 6칸 = 25% 만 사용하도록 설정
     //xs md 합쳐서 24이하면 가로로 정렬되고 24이상이면 그 다음 줄로 넘어간다.
@@ -53,7 +53,7 @@ const AppLayout = ({ children }) => {
             <Menu mode="horizontal" items={items}></Menu>
             <Row gutter={8}>
                 <Col xs={24} md={6}>
-                    {isLoggedIn ? <UserProfile /> : <LoginForm />}
+                    {user ? <UserProfile /> : <LoginForm />}
                 </Col>
                 <Col xs={24} md={12}>
                     {children}

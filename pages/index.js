@@ -5,11 +5,11 @@ import PostCard from "../components/post-card"
 
 const Home = () => {
     //AppLayout 안에 있는 div가 children이 된다.
-    const isLoggedIn = useSelector((state) => state.user.isLoggedIn)
+    const { user } = useSelector((state) => state.user)
     const mainPosts = useSelector((state) => state.post.mainPosts)
     return (
         <AppLayout>
-            {isLoggedIn && <PostForm />}
+            {user && <PostForm />}
             {mainPosts.map((post) => (
                 <PostCard key={post.id} post={post} />
             ))}
