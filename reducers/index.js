@@ -34,6 +34,7 @@ const rootReducerEx = combineReducers({
 const rootReducer = combineReducers({
     //reducer 합치기
     index: (state = {}, action) => {
+        console.log("reducer ", action)
         switch (action.type) {
             case HYDRATE:
                 return { ...state, ...action.payload }
