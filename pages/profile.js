@@ -1,5 +1,6 @@
 import AppLayout from "../components/appLayout"
 import Head from "next/head"
+import Router from "next/router"
 
 import NicknameEditForm from "../components/nickname-edit-form"
 import FollowingList from "../components/following-list"
@@ -8,6 +9,11 @@ import { useSelector } from "react-redux"
 
 const Profile = () => {
     const { user } = useSelector((state) => state.user)
+
+    if (!(user && user.id)) {
+        Router.push("/")
+        return null
+    }
     return (
         <>
             <Head>
