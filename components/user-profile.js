@@ -14,6 +14,7 @@ const UserProfile = () => {
     const onLogout = useCallback(() => {
         dispatch({})
     }, [])
+
     return (
         <Card
             actions={[
@@ -24,13 +25,13 @@ const UserProfile = () => {
                 </div>,
                 <div key="followings">
                     팔로잉
-                    {/* {user.Followings.length} */}
-                    <br />0
+                    <br />
+                    {user.Followings.length}
                 </div>,
                 <div key="followers">
                     팔로워
-                    {/* {user.Follwers.length} */}
-                    <br />0
+                    <br />
+                    {user.Followers.length}
                 </div>,
             ]}
         >

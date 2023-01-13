@@ -4,6 +4,12 @@ export const ADD_POST = {
     failure: "ADD_POST_FAIL",
 }
 
+export const REMOVE_POST = {
+    request: "REMOVE_POST_REQUEST",
+    success: "REMOVE_POST_SUCCESS",
+    failure: "REMOVE_POST_FAIL",
+}
+
 export const ADD_COMMENT = {
     request: "ADD_COMMENT_REQUEST",
     success: "ADD_COMMENT_SUCCESS",

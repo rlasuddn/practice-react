@@ -33,6 +33,11 @@ export const CHANGE_NICKNAME = {
     failure: "CHANGE_NICKNAME_FAILURE",
 }
 
+export const POST_TO_ME = {
+    add: "ADD_POST_TO_ME",
+    remove: "REMOVE_POST_TO_ME",
+}
+
 export const loginRequestAction = (data) => {
     return {
         type: LOG_IN.request,

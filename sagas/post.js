@@ -1,5 +1,7 @@
 import { all, fork, delay, put, throttle, takeLatest } from "redux-saga/effects"
-import { ADD_POST, ADD_COMMENT } from "../actions/post"
+import shortid from "shortid"
+import { ADD_POST, ADD_COMMENT, REMOVE_POST } from "../actions/post"
+import { POST_TO_ME } from "../actions/user"
 
 function addPostAPI() {
     return 1
@@ -10,10 +12,22 @@ function* addPost(action) {
         console.log("saga post")
         console.log(action)
         // const result = yield call(addPostAPI)
+        const id = shortid.generate()
+
+        //액션이 reducer에 데이터를 동시에 변경해야 한다면 추가로 액션을 호출한다.
         yield delay(1000)
+        //post reducer 데이터 변경
         yield put({
             type: ADD_POST.success,
-            data: action.data,
+            data: {
+                id,
+                content: action.data,
+            },
+        })
+        //user reducer 데이터 변경
+        yield put({
+            type: POST_TO_ME.add,
+            data: id,
         })
     } catch (err) {
         //실패 값은 response.data에 담겨있다.
@@ -29,6 +43,37 @@ function* watchAddPost() {
     yield takeLatest(ADD_POST.request, addPost)
 }
 
+function* removePost(action) {
+    try {
+        console.log("saga remove post")
+        console.log(action)
+        // const result = yield call(addPostAPI)
+
+        //액션이 reducer에 데이터를 동시에 변경해야 한다면 추가로 액션을 호출한다.
+        yield delay(1000)
+        //post reducer 데이터 변경
+        yield put({
+            type: REMOVE_POST.success,
+            data: action.data,
+        })
+        //user reducer 데이터 변경
+        yield put({
+            type: POST_TO_ME.remove,
+            data: action.data,
+        })
+    } catch (err) {
+        //실패 값은 response.data에 담겨있다.
+        yield put({
+            type: REMOVE_POST.failure,
+            error: err.response.data,
+        })
+    }
+}
+
+function* watchRemovePost() {
+    yield takeLatest(REMOVE_POST.request, removePost)
+}
+
 function addCommentAPI() {
     return 1
 }
@@ -38,11 +83,12 @@ function* addComment(action) {
         // const result = yield call(addCommentAPI)
         yield delay(2000)
         yield put({
-            type: ADD_COMMENT.request,
+            type: ADD_COMMENT.success,
             data: action.data,
         })
     } catch (err) {
         //실패 값은 response.data에 담겨있다.
+        console.log(err)
         yield put({
             type: ADD_COMMENT.failure,
             error: err.response.data,
@@ -55,5 +101,5 @@ function* watchAddComment() {
 }
 
 export default function* postSaga() {
-    yield all([fork(watchAddPost), fork(watchAddComment)])
+    yield all([fork(watchAddPost), fork(watchAddComment), fork(watchRemovePost)])
 }

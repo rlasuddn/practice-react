@@ -12,6 +12,7 @@ const CommentForm = ({ post }) => {
 
     const id = useSelector((state) => state.user.user?.id)
     const addCommentDone = useSelector((state) => state.post.addCommentDone)
+    const addCommentLoading = useSelector((state) => state.post.addCommentLoading)
 
     //성공적으로 댓글 작성 시 빈칸으로 변경
     useEffect(() => {
@@ -36,9 +37,10 @@ const CommentForm = ({ post }) => {
             <Form.Item style={{ position: "relative", margin: 0 }}>
                 <Input.TextArea rows={4} value={commentText} onChange={onChangeCommentText} />
                 <Button
-                    style={{ position: "absolute", right: 0, bottom: -40 }}
+                    style={{ position: "absolute", right: 0, bottom: -40, zIndex: 1 }}
                     type="primary"
                     htmlType="submit"
+                    loading={addCommentLoading}
                 >
                     삐약
                 </Button>
