@@ -1,4 +1,4 @@
-import { ADD_POST, ADD_COMMENT, REMOVE_POST } from "../actions/post"
+import { ADD_POST, ADD_COMMENT, REMOVE_POST, LOAD_POST } from "../actions/post"
 import shortId from "shortid"
 import produce from "immer"
 
@@ -6,49 +6,12 @@ import produce from "immer"
 import faker from "faker"
 
 export const initialState = {
-    mainPosts: [
-        {
-            id: 1,
-            User: {
-                id: 1,
-                nickname: "woo",
-            },
-            content: "첫 번째 게시글",
-            Images: [
-                {
-                    id: shortId.generate(),
-                    src: "https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726",
-                },
-                {
-                    id: shortId.generate(),
-                    src: "https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg",
-                },
-                {
-                    id: shortId.generate(),
-                    src: "https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg",
-                },
-            ],
-            Comments: [
-                {
-                    id: shortId.generate(),
-                    User: {
-                        id: shortId.generate(),
-                        nickname: "nero",
-                    },
-                    content: "우와 개정판이 나왔군요~",
-                },
-                {
-                    id: shortId.generate(),
-                    User: {
-                        id: shortId.generate(),
-                        nickname: "hero",
-                    },
-                    content: "얼른 사고싶어요~",
-                },
-            ],
-        },
-    ],
+    mainPosts: [],
     imagePaths: [],
+    hasMorePosts: true,
+    loadPostsLoading: false,
+    loadPostsDone: false,
+    loadPostsError: null,
     addPostLoading: false,
     addPostDone: false,
     addPostError: null,
@@ -60,10 +23,10 @@ export const initialState = {
     addCommentError: null,
 }
 
-//faker를 이용한 dummy data 만들기
-initialState.mainPosts = initialState.mainPosts.concat(
-    Array(20)
-        .fill()
+export const generateDummyPost = (number) =>
+    //faker를 이용한 dummy data 만들기
+    Array(number)
+        .fill(number)
         .map(() => ({
             id: shortId.generate(),
             User: {
@@ -82,7 +45,6 @@ initialState.mainPosts = initialState.mainPosts.concat(
                 },
             ],
         }))
-)
 
 const dummyPost = (data) => ({
     //임의 Id 생성 라이브러리
@@ -111,9 +73,23 @@ const reducer = (state = initialState, action) => {
       단 state가 아닌 draft로 조작 하여야 한다.
       기본 틀 return produce(state, (draft) => {}
     */
-
     return produce(state, (draft) => {
         switch (action.type) {
+            case LOAD_POST.request:
+                draft.loadPostsLoading = true
+                draft.loadPostsDone = false
+                draft.loadPostsError = null
+                break
+            case LOAD_POST.success:
+                draft.loadPostsLoading = false
+                draft.loadPostsDone = true
+                draft.mainPosts = action.data.concat(draft.mainPosts) //action.data 새로운 포스트에 draft.mainPosts 기존 포스트들 합치기
+                draft.hasMorePosts = draft.mainPosts.length < 50 //포스트가 50개 보다 적으면 true 많으면 false 포스트를 50개로 제한 => 더이상 포스트를 가져오지 않는다.
+                break
+            case LOAD_POST.failure:
+                draft.loadPostsLoading = false
+                draft.loadPostsError = action.error
+                break
             case ADD_POST.request:
                 draft.addPostLoading = true
                 draft.addPostDone = false

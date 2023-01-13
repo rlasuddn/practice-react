@@ -16,6 +16,12 @@ export const ADD_COMMENT = {
     failure: "ADD_COMMENT_FAIL",
 }
 
+export const LOAD_POST = {
+    request: "LOAD_POST_REQUEST",
+    success: "LOAD_POST_SUCCESS",
+    failure: "LOAD_POST_FAIL",
+}
+
 export const addPost = (data) => ({
     type: ADD_POST.request,
     data,

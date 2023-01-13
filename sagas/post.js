@@ -1,7 +1,30 @@
 import { all, fork, delay, put, throttle, takeLatest } from "redux-saga/effects"
 import shortid from "shortid"
-import { ADD_POST, ADD_COMMENT, REMOVE_POST } from "../actions/post"
+import { ADD_POST, ADD_COMMENT, REMOVE_POST, LOAD_POST } from "../actions/post"
 import { POST_TO_ME } from "../actions/user"
+import { generateDummyPost } from "../reducers/post"
+
+function* loadPosts(action) {
+    try {
+        console.log("saga loadPosts ", action)
+
+        yield delay(1000)
+        yield put({
+            type: LOAD_POST.success,
+            data: generateDummyPost(10), //reducer에서 만들어둔 더미포스트 생성
+        })
+    } catch (err) {
+        //실패 값은 response.data에 담겨있다.
+        yield put({
+            type: LOAD_POST.failure,
+            error: err.response.data,
+        })
+    }
+}
+
+function* watchLoadPosts() {
+    yield takeLatest(LOAD_POST.request, loadPosts)
+}
 
 function addPostAPI() {
     return 1
@@ -101,5 +124,10 @@ function* watchAddComment() {
 }
 
 export default function* postSaga() {
-    yield all([fork(watchAddPost), fork(watchAddComment), fork(watchRemovePost)])
+    yield all([
+        fork(watchAddPost),
+        fork(watchAddComment),
+        fork(watchRemovePost),
+        fork(watchLoadPosts),
+    ])
 }
