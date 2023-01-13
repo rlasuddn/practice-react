@@ -1,4 +1,4 @@
-import { LOG_IN, LOG_OUT, CHANGE_NICKNAME, POST_TO_ME } from "../actions/user"
+import { LOG_IN, LOG_OUT, CHANGE_NICKNAME, POST_TO_ME, FOLLOW, UNFOLLOW } from "../actions/user"
 import produce from "immer"
 
 //기본 state
@@ -109,6 +109,39 @@ const reducer = (state = initialState, action) => {
                         Posts: state.user.Posts.filter((v) => v.id !== action.data),
                     },
                 }
+            case FOLLOW.request:
+                draft.followLoading = true
+                draft.followError = null
+                draft.followDone = false
+                break
+
+            case FOLLOW.success:
+                draft.followLoading = false
+                draft.user.Followings.push({ id: action.data })
+                draft.followDone = true
+                break
+
+            case FOLLOW.failure:
+                draft.followLoading = false
+                draft.followError = action.error
+                break
+
+            case UNFOLLOW.request:
+                draft.unfollowLoading = true
+                draft.unfollowError = null
+                draft.unfollowDone = false
+                break
+
+            case UNFOLLOW.success:
+                draft.unfollowLoading = false
+                draft.user.Followings = draft.user.Followings.filter((v) => v.id !== action.data)
+                draft.unfollowDone = true
+                break
+
+            case UNFOLLOW.failure:
+                draft.unfollowLoading = false
+                draft.unfollowError = action.error
+                break
             default:
                 break
         }
